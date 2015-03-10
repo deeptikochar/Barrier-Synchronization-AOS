@@ -14,7 +14,13 @@ make clean
 To compile on the jinx cluster, type:
 ./compile-jinx.sh
 
-To run an OpenMPI test program:  
+To run on the jinx cluster:
+qsub runner-omp.sh
+qsub runner-mpi.sh
+
+To run a test program:  
+cd Test
+make
 mpirun -np <num_of_processes> <executable_name> > <output_file>
   
 The test.py checks the values and the timestamps printed after each barrier. Look at the comments at the top of the file for printf format to use.  
