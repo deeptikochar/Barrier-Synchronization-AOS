@@ -35,18 +35,18 @@ int main(int argc, char* argv[])
             "Number of threads = %d\n", P);
     double total_time;
     struct timeval tv1, tv2;
-    int j, my_sense = 1;
+    int my_sense = 1;
+    int j,val=0;
     
-    #pragma omp parallel num_threads(P) shared(count, sense, tv1, tv2, total_time) firstprivate(my_sense, j)
+    #pragma omp parallel num_threads(P) shared(count, val, sense, tv1, tv2, total_time) firstprivate(my_sense, j)
     {
         gettimeofday(&tv1, NULL);
         for (j=0; j<NUMLOOPS; j++){
-            
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
+            #pragma omp atomic
+            val++;
+            barrier(&my_sense);
+            printf("Val is %d\n", val);
+            barrier(&my_sense);
         }
         gettimeofday(&tv2, NULL);
     }
