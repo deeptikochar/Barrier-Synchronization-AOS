@@ -42,11 +42,11 @@ int main(int argc, char* argv[])
         gettimeofday(&tv1, NULL);
         for (j=0; j<NUMLOOPS; j++){
             
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
-            barrier(&my_sense,&old_count);
+            barrier(&my_sense);
+            barrier(&my_sense);
+            barrier(&my_sense);
+            barrier(&my_sense);
+            barrier(&my_sense);
         }
         gettimeofday(&tv2, NULL);
     }
