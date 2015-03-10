@@ -126,18 +126,18 @@ int main(int argc, char* argv[])
     double total_time;
     struct timeval tv1, tv2;
     int my_sense = 1;
-    int j;
-    #pragma omp parallel num_threads(P) shared(rounds,tv1,tv2) firstprivate(my_sense, j)
+    int j,val=0;
+    
+    #pragma omp parallel num_threads(P) shared(count, val, sense, tv1, tv2, total_time) firstprivate(my_sense, j)
     {
         gettimeofday(&tv1, NULL);
-        for (j=0;j<NUMLOOPS;j++){
+        for (j=0; j<NUMLOOPS; j++){
+            #pragma omp atomic
+            val++;
             barrier(&my_sense);
+            printf("Val is %d\n", val);
             barrier(&my_sense);
-            barrier(&my_sense);
-            barrier(&my_sense);
-            barrier(&my_sense);
-        }
-        gettimeofday(&tv2, NULL);
+        }        gettimeofday(&tv2, NULL);
     }
     
     total_time = (double) (tv2.tv_usec - tv1.tv_usec) + (double) (tv2.tv_sec - tv1.tv_sec)*1000000;
