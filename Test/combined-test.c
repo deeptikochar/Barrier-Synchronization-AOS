@@ -1,3 +1,15 @@
+/*
+Test script for combined barrier
+================================
+
+Expected output:
+For a given barrier number, all ranks should print together, interleaved arbitrarily.
+The value for val must be between 1 and T and for a given rank, must inrement sequentially,
+but the thread numbers can interleave arbitrarily.
+
+*/
+
+
 #include <mpi.h>
 #include <omp.h>
 #include <stdio.h>
@@ -52,19 +64,22 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
     combined_barrier_init();
     struct timeval tv1, tv2;
-
-    #pragma omp parallel num_threads(T) shared(rounds,tv1,tv2) firstprivate(my_sense, i)
+    int vpid,val = 0;
+    long xyz;
+    #pragma omp parallel num_threads(T) shared(rounds,tv1,tv2,val) firstprivate(my_sense, vpid, i)
     {
-        int val = 0;
+        vpid =  omp_get_thread_num();
         struct timeval tv;
         unsigned long timestamp;
         for(i = 0; i < 1000; i++)
         {
-            val = val+1;
-            combined_barrier();    
+            #pragma omp atomic
+            val++;
             gettimeofday(&tv, NULL);
             timestamp = tv.tv_sec * 1000000 + tv.tv_usec;
-            printf("Result %d After the barrier %d value %d at %lu\n",rank, i, val, timestamp);
+            printf("Rank:%d | Thread:%d | Barrier:%d | Value:%d at time:%lu\n",rank, vpid, i, val, timestamp);
+            if(vpid == 1)
+                for(xyz=0;xyz<1000000;xyz++);
             combined_barrier();
         }
     }
