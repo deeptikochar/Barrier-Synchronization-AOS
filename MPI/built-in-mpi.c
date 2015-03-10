@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     {
 		gettimeofday(&tv1, NULL);
 		double total_time = (double) (tv1.tv_usec - tv.tv_usec) + (double) (tv1.tv_sec - tv.tv_sec)*1000000;
-		printf("\nSUMMARY for Tournament barrier:\nNumber of processes: %d\nTotal run-time for %d "
+		printf("\nSUMMARY for Built-in barrier:\nNumber of processes: %d\nTotal run-time for %d "
         	    "loops with 5 barriers per loop: %fs\n"
             	"The average time per barrier: %fus\n",
             	P, NUMLOOPS, total_time/1000000, (double)(total_time/(NUMLOOPS*5)));
