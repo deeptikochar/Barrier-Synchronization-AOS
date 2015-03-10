@@ -1,4 +1,4 @@
-all: omp-counter omp-tournament mpi-tournament mpi-dissemination mpi-built-in combined
+all: omp-counter omp-tournament mpi-tournament mpi-dissemination combined
 
 omp-counter: counter-test.c
 	gcc -o omp-counter counter-test.c -fopenmp
