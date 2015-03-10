@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
             printf("Rank:%d | Thread:%d | Barrier:%d | Value:%d at time:%lu\n",rank, vpid, i, val, timestamp);
             if(vpid == 1)
                 for(xyz=0;xyz<1000000;xyz++);
-            combined_barrier();
+            combined_barrier(&my_sense);
         }
     }
 
